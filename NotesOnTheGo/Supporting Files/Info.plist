@@ -2,6 +2,14 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>NSAppleMusicUsageDescription</key>
+	<string>acceso a contenido multimedia para personalizar la imagen de la categoria.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>acceso a photos para personalizar la imagen de la categoria.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Acceso a camara para personalizar imagen de la categoria.</string>
+	<key>LSApplicationCategoryType</key>
+	<string></string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleExecutable</key>
