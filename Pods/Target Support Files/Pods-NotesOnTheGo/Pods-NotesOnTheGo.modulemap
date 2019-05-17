@@ -1,0 +1,6 @@
+framework module Pods_NotesOnTheGo {
+  umbrella header "Pods-NotesOnTheGo-umbrella.h"
+
+  export *
+  module * { export * }
+}
