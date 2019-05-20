@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import CoreData
+import RealmSwift
 
 class NewCategoryViewController: UIViewController {
     
@@ -27,12 +27,10 @@ class NewCategoryViewController: UIViewController {
     
     let colorKeys = ["R","G","B","A"]
     
-    //crea una referencia a la clase delegate para acceder a la propiedad persistentContainer y obtener el contexto de esta aplicacion.
-    //con UIApplication.shared.delegate as! AppDelegate; accedemos a la app en tiempo ejecucion, a un singleton llamado shared
-    //que devuelve una instancia unica de la aplicacion, y esa instancia si tiene una propiedad delegate que  casteamos a un Appdelegate
-    //porque sabemos que solo hay un delegate.
-    //de aqui obtenemos la propiedad persistentContainer y su viewContext.
-    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+    //inicializar realm
+    let realm = try! Realm()
+    
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -59,13 +57,16 @@ class NewCategoryViewController: UIViewController {
     
     
     @IBAction func savePressed(_ sender: UIButton) {
-        let category = Category(context: context)
-        category.title = textField.text
+        let category = Category()
+        category.title = textField.text!
         category.colorHex = hexLabel.text
         category.image = imageView.image?.pngData()//jpegData(compressionQuality: 0.5)
+    
         
         do {
-            try context.save()
+            try realm.write {
+                realm.add(category)
+            }
         } catch {
             fatalError("error al intentar guardar el contexto \(error)")
         }

@@ -14,10 +14,10 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "3B7C5C2A350982578B6D3A6DDF8456E6"
-               BlueprintName = "Pods-NotesOnTheGo"
+               BlueprintIdentifier = "76F15470B604F2850C83A45BB889F8BF"
+               BlueprintName = "SwipeCellKit"
                ReferencedContainer = "container:Pods.xcodeproj"
-               BuildableName = "Pods-NotesOnTheGo.framework">
+               BuildableName = "SwipeCellKit.framework">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>

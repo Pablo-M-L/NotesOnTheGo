@@ -7,22 +7,18 @@
 //
 
 import UIKit
-import CoreData
+import RealmSwift
 
 class CategoriesViewController: UICollectionViewController {
 
-    var categoriesArray = [Category]()
-        
-    //crea una referencia a la clase delegate para acceder a la propiedad persistentContainer y obtener el contexto de esta aplicacion.
-    //con UIApplication.shared.delegate as! AppDelegate; accedemos a la app en tiempo ejecucion, a un singleton llamado shared
-    //que devuelve una instancia unica de la aplicacion, y esa instancia si tiene una propiedad delegate que  casteamos a un Appdelegate
-    //porque sabemos que solo hay un delegate.
-    //de aqui obtenemos la propiedad persistentContainer y su viewContext.
-    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+    //se mantiene actualizado en tiempo real por realm
+    var categories: Results<Category>?
+    
+    let realm = try! Realm()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        loadCategories()
         //titulo en grande
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationController?.navigationItem.largeTitleDisplayMode = .automatic
@@ -37,31 +33,23 @@ class CategoriesViewController: UICollectionViewController {
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        let request: NSFetchRequest<Category> = Category.fetchRequest()
-        let sortDescription = NSSortDescriptor(key: "title", ascending: true)
-        request.sortDescriptors = [sortDescription]
-        
-        do{
-            try categoriesArray = context.fetch(request)
-        }catch{
-            print("error al recuperar categorias \(error)")
-        }
-        
-        collectionView.reloadData()
+        loadCategories()
     }
+   
+
     
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
     }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return categoriesArray.count
+        return categories?.count ?? 0 //si categories es nulo el valor devuelto será 0
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CategoryCell", for: indexPath) as! CategoryCollectionViewCell
         
-        let category = categoriesArray[indexPath.row]
+        let category = categories![indexPath.row]
         
         cell.categoryLabel.text = category.title
         cell.categoryLabel.textColor = UIColor(hex: category.colorHex!)
@@ -88,12 +76,20 @@ class CategoriesViewController: UICollectionViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "ShowNoteList"{
             let destinationVC = segue.destination as! NotesTableViewController
-            destinationVC.selectedCategory = categoriesArray[selectCategory]
+            destinationVC.selectedCategory = categories![selectCategory]
             
         }
     }
-
     
+    func loadCategories(){
+        //recupera los items de Category. Devuelve un objeto results<caegories> de la clase categorias.
+        categories = realm.objects(Category.self)
+        collectionView.reloadData()
+        
+    }
 
 }
+
+    
+    
 

@@ -7,5 +7,6 @@ target 'NotesOnTheGo' do
 
   # Pods for NotesOnTheGo
   pod 'RealmSwift'
+  pod 'SwipeCellKit'
   
 end
